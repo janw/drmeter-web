@@ -1,0 +1,74 @@
+[tool.poetry]
+name = "drmeter-web"
+version = "0.1.0"
+description = ""
+authors = ["Jan Willhaus <mail@janwillhaus.de>"]
+readme = "README.md"
+packages = [{include = "drmeter_web"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+drmeter = "^0.2.1"
+fastapi = "^0.101.0"
+python-multipart = "^0.0.6"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.3"
+black = "^23.7.0"
+ruff = "^0.0.278"
+ipython = "^8.14.0"
+ipdb = "^0.13.13"
+mypy = "^1.4.1"
+
+[tool.poetry.group.tests.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+extend-select = [
+    "I",   # isort
+    "B",   # bugbear
+    "A",   # builtins
+    "ISC", # implicit-str-concat
+    "Q",   # quotes
+    "TID", # tidy-imports
+    "C4",  # comprehensions
+    "SIM", # simplify
+    "C90", # mccabe
+]
+unfixable = [
+    "B", # bugbear
+]
+ignore = [
+    "SIM108", # if-else-block-instead-of-if-exp
+]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.black]
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.mypy]
+warn_unused_configs = true
+disallow_untyped_defs = true
+strict_optional = true
+packages = ["drmeter", "tests"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "soundfile.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "drmeter.*"
+ignore_missing_imports = true
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
